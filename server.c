@@ -1,3 +1,8 @@
+/**
+ * @file servidor.c
+ * @brief Servidor TCP básico que interpreta comandos SET, GET y DEL.
+ */
+
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <stdio.h>
@@ -8,116 +13,171 @@
 #include <signal.h>
 #include <errno.h>
 
-#define PORT 5000           // Puerto donde escucha el servidor
-#define BUFSIZE 512         // Tamaño máximo del buffer de entrada
+#define PORT 5000       // Puerto donde escuchará el servidor
+#define BUFSIZE 512     // Tamaño máximo del buffer de entrada
 
-// Función auxiliar para enviar todo el buffer al cliente
-// send() puede enviar menos bytes de los pedidos, por eso repetimos hasta enviar todo
-ssize_t sendall(int sockfd, const void *buf, size_t len) {
+/**
+ * @brief Envía un mensaje completo al cliente usando send().
+ *
+ * @param sockfd Socket del cliente.
+ * @param msg Cadena a enviar (debe terminar en '\0').
+ * @return Número de bytes enviados, o valor negativo en caso de error.
+ */
+ssize_t sendall(int sockfd, const char *msg) {
+    size_t len = strlen(msg);
     size_t total = 0;
-    const char *p = buf;
     while (total < len) {
-        ssize_t n = send(sockfd, p + total, len - total, 0);
+        ssize_t n = send(sockfd, msg + total, len - total, 0);
         if (n <= 0) return n; // Error o desconexión
         total += n;
     }
     return total;
 }
 
-int main(void) {
-    // Ignorar SIGPIPE para evitar que el server muera si el cliente se desconecta de golpe
-    signal(SIGPIPE, SIG_IGN);
-
-    // Crear el socket TCP (IPv4, orientado a conexión)
+/**
+ * @brief Crea y configura el socket del servidor (IPv4, TCP).
+ *
+ * @return Descriptor del socket configurado y en escucha.
+ */
+int setup_server_socket(void) {
     int s = socket(AF_INET, SOCK_STREAM, 0);
     if (s < 0) { perror("socket"); exit(EXIT_FAILURE); }
 
-    // Configurar la dirección del servidor
-    struct sockaddr_in serveraddr;
-    memset(&serveraddr, 0, sizeof(serveraddr));
-    serveraddr.sin_family = AF_INET;            // IPv4
-    serveraddr.sin_addr.s_addr = INADDR_ANY;    // Escuchar en todas las interfaces locales
-    serveraddr.sin_port = htons(PORT);          // Puerto en orden de red
+    // Estructura con la dirección del servidor
+    struct sockaddr_in serveraddr = {0};
+    serveraddr.sin_family = AF_INET;
+    serveraddr.sin_addr.s_addr = INADDR_ANY;
+    serveraddr.sin_port = htons(PORT);
 
-    // Asociar el socket al puerto y dirección
+    // Asociar el socket al puerto definido
     if (bind(s, (struct sockaddr *)&serveraddr, sizeof(serveraddr)) < 0) {
         perror("bind"); exit(EXIT_FAILURE);
     }
-    // Poner el socket en modo escucha (esperar conexiones)
+    // Poner el socket en modo escucha
     if (listen(s, 1) < 0) { perror("listen"); exit(EXIT_FAILURE); }
 
+    return s;
+}
+
+/**
+ * @brief Lee el comando enviado por el cliente hasta '\\n' o fin de buffer.
+ *
+ * @param clientfd Socket del cliente.
+ * @param buffer Buffer donde guardar el comando recibido.
+ * @return 0 en éxito, -1 si hubo error o desconexión.
+ */
+int read_command(int clientfd, char *buffer) {
+    ssize_t total = 0, n = 0;
+    while (total < BUFSIZE) {
+        n = recv(clientfd, buffer + total, 1, 0);
+        if (n <= 0) return -1;      // Error o cliente desconectado
+        if (buffer[total] == '\n') { // Fin de línea
+            total++;
+            break;
+        }
+        total++;
+    }
+    buffer[total] = '\0'; // Terminar la cadena con '\0'
+    return 0;
+}
+
+/**
+ * @brief Procesa el comando recibido del cliente (SET, GET o DEL).
+ *
+ * @param clientfd Socket del cliente.
+ * @param cmd Comando recibido.
+ * @param key Clave asociada al comando.
+ * @param value Valor (solo para SET).
+ */
+void process_command(int clientfd, const char *cmd, const char *key, const char *value) {
+    // Comando SET: guardar el valor en un archivo con nombre 'key'
+    if (strcmp(cmd, "SET") == 0 && value != NULL) {
+        FILE *f = fopen(key, "w");
+        if (!f) {
+            sendall(clientfd, "ERROR\n");
+            return;
+        }
+        fprintf(f, "%s", value);
+        fclose(f);
+        sendall(clientfd, "OK\n");
+
+    // Comando GET: leer contenido del archivo 'key'
+    } else if (strcmp(cmd, "GET") == 0) {
+        FILE *f = fopen(key, "r");
+        if (!f) {
+            sendall(clientfd, "NOTFOUND\n");  // Archivo no encontrado
+        } else {
+            char val[256];
+            size_t r = fread(val, 1, sizeof(val) - 1, f);
+            val[r] = '\0'; // Terminar la cadena
+            fclose(f);
+            sendall(clientfd, "OK\n");
+            sendall(clientfd, val);
+            sendall(clientfd, "\n");
+        }
+
+    // Comando DEL: eliminar el archivo con nombre 'key'
+    } else if (strcmp(cmd, "DEL") == 0) {
+        remove(key);  // Ignora si el archivo no existe
+        sendall(clientfd, "OK\n");
+
+    // Comando inválido
+    } else {
+        sendall(clientfd, "ERROR\n");
+    }
+}
+
+/**
+ * @brief Atiende la conexión con un cliente: lee el comando y lo procesa.
+ *
+ * @param clientfd Socket del cliente.
+ */
+void handle_client(int clientfd) {
+    char buffer[BUFSIZE + 1];
+    if (read_command(clientfd, buffer) < 0) {
+        close(clientfd);
+        return;
+    }
+
+    // Variables para parsear el comando: cmd, key y (opcional) value
+    char cmd[8] = {0}, key[256] = {0}, value[256] = {0};
+    int parsed = sscanf(buffer, "%7s %255s %255[^\n]", cmd, key, value);
+
+    if (parsed < 2) {
+        sendall(clientfd, "ERROR\n");
+    } else {
+        process_command(clientfd, cmd, key, (parsed == 3 ? value : NULL));
+    }
+
+    // Cerrar conexión con el cliente
+    close(clientfd);
+}
+
+int main(void) {
+    // Evitar que SIGPIPE mate al servidor si el cliente se desconecta abruptamente
+    signal(SIGPIPE, SIG_IGN);
+
+    // Configurar socket del servidor
+    int server_socket = setup_server_socket();
     printf("Servidor escuchando en puerto %d...\n", PORT);
 
-    // Bucle principal: aceptar y atender clientes uno por uno
+    // Bucle principal: aceptar clientes y atenderlos
     while (1) {
         struct sockaddr_in clientaddr;
         socklen_t addrlen = sizeof(clientaddr);
-        // Esperar una conexión entrante
-        int clientfd = accept(s, (struct sockaddr *)&clientaddr, &addrlen);
-        if (clientfd < 0) { perror("accept"); continue; }
 
-        // Leer el comando del cliente, byte a byte hasta '\n' o buffer lleno
-        char buffer[BUFSIZE+1];
-        ssize_t n = 0, total = 0;
-        while (total < BUFSIZE) {
-            n = recv(clientfd, buffer + total, 1, 0);
-            if (n <= 0) break; // Error o desconexión
-            if (buffer[total] == '\n') { total++; break; } // Fin de línea
-            total++;
-        }
-        if (n <= 0) { close(clientfd); continue; } // Si hubo error, cerrar y esperar otro cliente
-        buffer[total] = '\0'; // Terminar el string
-
-        // Parsear el comando recibido: cmd, key y value (si corresponde)
-        char cmd[8], key[256], value[256];
-        int parsed = sscanf(buffer, "%7s %255s %255[^\n]", cmd, key, value);
-        if (parsed < 2) {
-            // Comando inválido
-            sendall(clientfd, "ERROR\n", 6);
-            close(clientfd);
+        // Esperar conexión de un cliente
+        int clientfd = accept(server_socket, (struct sockaddr *)&clientaddr, &addrlen);
+        if (clientfd < 0) {
+            perror("accept");
             continue;
         }
 
-        // Procesar comando SET
-        if (strcmp(cmd, "SET") == 0 && parsed == 3) {
-            // Abrir (o crear) archivo con nombre 'key' para escritura
-            FILE *f = fopen(key, "w");
-            if (!f) {
-                sendall(clientfd, "ERROR\n", 6);
-                close(clientfd);
-                continue;
-            }
-            // Escribir el valor en el archivo
-            fprintf(f, "%s", value);
-            fclose(f);
-            sendall(clientfd, "OK\n", 3); // Responder OK
-        // Procesar comando GET
-        } else if (strcmp(cmd, "GET") == 0 && parsed == 2) {
-            // Intentar abrir el archivo para lectura
-            FILE *f = fopen(key, "r");
-            if (!f) {
-                sendall(clientfd, "NOTFOUND\n", 9); // No existe
-            } else {
-                char val[256];
-                size_t r = fread(val, 1, sizeof(val)-1, f); // Leer contenido
-                val[r] = '\0';
-                fclose(f);
-                sendall(clientfd, "OK\n", 3); // Responder OK
-                sendall(clientfd, val, strlen(val)); // Enviar valor
-                sendall(clientfd, "\n", 1); // Nueva línea
-            }
-        // Procesar comando DEL
-        } else if (strcmp(cmd, "DEL") == 0 && parsed == 2) {
-            remove(key); // Borrar archivo (no importa si existe o no)
-            sendall(clientfd, "OK\n", 3); // Responder OK
-        // Comando desconocido
-        } else {
-            sendall(clientfd, "ERROR\n", 6);
-        }
-        // Cerrar la conexión con el cliente
-        close(clientfd);
+        // Manejar la conexión del cliente
+        handle_client(clientfd);
     }
-    // Cerrar el socket principal (nunca se llega aquí)
-    close(s);
+
+    // (No se llega nunca aquí)
+    close(server_socket);
     return 0;
 }

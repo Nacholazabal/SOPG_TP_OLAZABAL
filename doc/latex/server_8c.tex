@@ -1,0 +1,153 @@
+\hypertarget{server_8c}{}\doxysection{Referencia del Archivo server.\+c}
+\label{server_8c}\index{server.c@{server.c}}
+{\ttfamily \#include $<$arpa/inet.\+h$>$}\newline
+{\ttfamily \#include $<$netinet/in.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$sys/socket.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$signal.\+h$>$}\newline
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+Dependencia gráfica adjunta para server.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{server_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{defines}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{server_8c_a614217d263be1fb1a5f76e2ff7be19a2}{PORT}}~5000
+\item 
+\#define \mbox{\hyperlink{server_8c_aeca034f67218340ecb2261a22c2f3dcd}{BUFSIZE}}~512
+\end{DoxyCompactItemize}
+\doxysubsection*{Funciones}
+\begin{DoxyCompactItemize}
+\item 
+ssize\+\_\+t \mbox{\hyperlink{server_8c_a8ddb68df5402611a1f6f2e95ce1cb9de}{sendall}} (int sockfd, const char $\ast$msg)
+\begin{DoxyCompactList}\small\item\em Envía un mensaje completo al cliente usando send(). \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{server_8c_a9db6cd735b95c2afe7977b66cb8b56b8}{setup\+\_\+server\+\_\+socket}} (void)
+\begin{DoxyCompactList}\small\item\em Crea y configura el socket del servidor (IPv4, TCP). \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{server_8c_a9b19e7e0c524b1a8c59bab9e3d234933}{read\+\_\+command}} (int clientfd, char $\ast$buffer)
+\begin{DoxyCompactList}\small\item\em Lee el comando enviado por el cliente hasta \textquotesingle{}\textbackslash{}n\textquotesingle{} o fin de buffer. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{server_8c_a6d0fb26c45e8dcb5a62055cdb0c85f5f}{process\+\_\+command}} (int clientfd, const char $\ast$cmd, const char $\ast$key, const char $\ast$value)
+\begin{DoxyCompactList}\small\item\em Procesa el comando recibido del cliente (SET, GET o DEL). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{server_8c_abf11440db53eae485aa1e2d9ee10496e}{handle\+\_\+client}} (int clientfd)
+\begin{DoxyCompactList}\small\item\em Atiende la conexión con un cliente\+: lee el comando y lo procesa. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{server_8c_a840291bc02cba5474a4cb46a9b9566fe}{main}} (void)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Documentación de los \textquotesingle{}defines\textquotesingle{}}
+\mbox{\Hypertarget{server_8c_aeca034f67218340ecb2261a22c2f3dcd}\label{server_8c_aeca034f67218340ecb2261a22c2f3dcd}} 
+\index{server.c@{server.c}!BUFSIZE@{BUFSIZE}}
+\index{BUFSIZE@{BUFSIZE}!server.c@{server.c}}
+\doxysubsubsection{\texorpdfstring{BUFSIZE}{BUFSIZE}}
+{\footnotesize\ttfamily \#define BUFSIZE~512}
+
+\mbox{\Hypertarget{server_8c_a614217d263be1fb1a5f76e2ff7be19a2}\label{server_8c_a614217d263be1fb1a5f76e2ff7be19a2}} 
+\index{server.c@{server.c}!PORT@{PORT}}
+\index{PORT@{PORT}!server.c@{server.c}}
+\doxysubsubsection{\texorpdfstring{PORT}{PORT}}
+{\footnotesize\ttfamily \#define PORT~5000}
+
+
+
+\doxysubsection{Documentación de las funciones}
+\mbox{\Hypertarget{server_8c_abf11440db53eae485aa1e2d9ee10496e}\label{server_8c_abf11440db53eae485aa1e2d9ee10496e}} 
+\index{server.c@{server.c}!handle\_client@{handle\_client}}
+\index{handle\_client@{handle\_client}!server.c@{server.c}}
+\doxysubsubsection{\texorpdfstring{handle\_client()}{handle\_client()}}
+{\footnotesize\ttfamily void handle\+\_\+client (\begin{DoxyParamCaption}\item[{int}]{clientfd }\end{DoxyParamCaption})}
+
+
+
+Atiende la conexión con un cliente\+: lee el comando y lo procesa. 
+
+
+\begin{DoxyParams}{Parámetros}
+{\em clientfd} & Socket del cliente. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{server_8c_a840291bc02cba5474a4cb46a9b9566fe}\label{server_8c_a840291bc02cba5474a4cb46a9b9566fe}} 
+\index{server.c@{server.c}!main@{main}}
+\index{main@{main}!server.c@{server.c}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{server_8c_a6d0fb26c45e8dcb5a62055cdb0c85f5f}\label{server_8c_a6d0fb26c45e8dcb5a62055cdb0c85f5f}} 
+\index{server.c@{server.c}!process\_command@{process\_command}}
+\index{process\_command@{process\_command}!server.c@{server.c}}
+\doxysubsubsection{\texorpdfstring{process\_command()}{process\_command()}}
+{\footnotesize\ttfamily void process\+\_\+command (\begin{DoxyParamCaption}\item[{int}]{clientfd,  }\item[{const char $\ast$}]{cmd,  }\item[{const char $\ast$}]{key,  }\item[{const char $\ast$}]{value }\end{DoxyParamCaption})}
+
+
+
+Procesa el comando recibido del cliente (SET, GET o DEL). 
+
+
+\begin{DoxyParams}{Parámetros}
+{\em clientfd} & Socket del cliente. \\
+\hline
+{\em cmd} & Comando recibido. \\
+\hline
+{\em key} & Clave asociada al comando. \\
+\hline
+{\em value} & Valor (solo para SET). \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{server_8c_a9b19e7e0c524b1a8c59bab9e3d234933}\label{server_8c_a9b19e7e0c524b1a8c59bab9e3d234933}} 
+\index{server.c@{server.c}!read\_command@{read\_command}}
+\index{read\_command@{read\_command}!server.c@{server.c}}
+\doxysubsubsection{\texorpdfstring{read\_command()}{read\_command()}}
+{\footnotesize\ttfamily int read\+\_\+command (\begin{DoxyParamCaption}\item[{int}]{clientfd,  }\item[{char $\ast$}]{buffer }\end{DoxyParamCaption})}
+
+
+
+Lee el comando enviado por el cliente hasta \textquotesingle{}\textbackslash{}n\textquotesingle{} o fin de buffer. 
+
+
+\begin{DoxyParams}{Parámetros}
+{\em clientfd} & Socket del cliente. \\
+\hline
+{\em buffer} & Buffer donde guardar el comando recibido. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Devuelve}
+0 en éxito, -\/1 si hubo error o desconexión. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{server_8c_a8ddb68df5402611a1f6f2e95ce1cb9de}\label{server_8c_a8ddb68df5402611a1f6f2e95ce1cb9de}} 
+\index{server.c@{server.c}!sendall@{sendall}}
+\index{sendall@{sendall}!server.c@{server.c}}
+\doxysubsubsection{\texorpdfstring{sendall()}{sendall()}}
+{\footnotesize\ttfamily ssize\+\_\+t sendall (\begin{DoxyParamCaption}\item[{int}]{sockfd,  }\item[{const char $\ast$}]{msg }\end{DoxyParamCaption})}
+
+
+
+Envía un mensaje completo al cliente usando send(). 
+
+
+\begin{DoxyParams}{Parámetros}
+{\em sockfd} & Socket del cliente. \\
+\hline
+{\em msg} & Cadena a enviar (debe terminar en \textquotesingle{}\textbackslash{}0\textquotesingle{}). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Devuelve}
+Número de bytes enviados, o valor negativo en caso de error. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{server_8c_a9db6cd735b95c2afe7977b66cb8b56b8}\label{server_8c_a9db6cd735b95c2afe7977b66cb8b56b8}} 
+\index{server.c@{server.c}!setup\_server\_socket@{setup\_server\_socket}}
+\index{setup\_server\_socket@{setup\_server\_socket}!server.c@{server.c}}
+\doxysubsubsection{\texorpdfstring{setup\_server\_socket()}{setup\_server\_socket()}}
+{\footnotesize\ttfamily int setup\+\_\+server\+\_\+socket (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Crea y configura el socket del servidor (IPv4, TCP). 
+
+\begin{DoxyReturn}{Devuelve}
+Descriptor del socket configurado y en escucha. 
+\end{DoxyReturn}

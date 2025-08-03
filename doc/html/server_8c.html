@@ -1,0 +1,354 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Servidor TCP simple: Referencia del Archivo server.c</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Servidor TCP simple
+   </div>
+   <div id="projectbrief">Servidor que interpreta comandos SET, GET y DEL por TCP.</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Buscar','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#define-members">defines</a> &#124;
+<a href="#func-members">Funciones</a>  </div>
+  <div class="headertitle">
+<div class="title">Referencia del Archivo server.c</div>  </div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &lt;arpa/inet.h&gt;</code><br />
+<code>#include &lt;netinet/in.h&gt;</code><br />
+<code>#include &lt;stdio.h&gt;</code><br />
+<code>#include &lt;stdlib.h&gt;</code><br />
+<code>#include &lt;string.h&gt;</code><br />
+<code>#include &lt;sys/socket.h&gt;</code><br />
+<code>#include &lt;unistd.h&gt;</code><br />
+<code>#include &lt;signal.h&gt;</code><br />
+<code>#include &lt;errno.h&gt;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Dependencia gráfica adjunta para server.c:</div>
+<div class="dyncontent">
+<div class="center"><img src="server_8c__incl.png" border="0" usemap="#aserver_8c" alt=""/></div>
+<map name="aserver_8c" id="aserver_8c">
+<area shape="rect" title=" " alt="" coords="427,5,500,32"/>
+<area shape="rect" title=" " alt="" coords="5,80,97,107"/>
+<area shape="rect" title=" " alt="" coords="122,80,218,107"/>
+<area shape="rect" title=" " alt="" coords="242,80,309,107"/>
+<area shape="rect" title=" " alt="" coords="333,80,404,107"/>
+<area shape="rect" title=" " alt="" coords="428,80,499,107"/>
+<area shape="rect" title=" " alt="" coords="523,80,625,107"/>
+<area shape="rect" title=" " alt="" coords="650,80,725,107"/>
+<area shape="rect" title=" " alt="" coords="749,80,823,107"/>
+<area shape="rect" title=" " alt="" coords="847,80,915,107"/>
+</map>
+</div>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+defines</h2></td></tr>
+<tr class="memitem:a614217d263be1fb1a5f76e2ff7be19a2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="server_8c.html#a614217d263be1fb1a5f76e2ff7be19a2">PORT</a>&#160;&#160;&#160;5000</td></tr>
+<tr class="separator:a614217d263be1fb1a5f76e2ff7be19a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeca034f67218340ecb2261a22c2f3dcd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="server_8c.html#aeca034f67218340ecb2261a22c2f3dcd">BUFSIZE</a>&#160;&#160;&#160;512</td></tr>
+<tr class="separator:aeca034f67218340ecb2261a22c2f3dcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Funciones</h2></td></tr>
+<tr class="memitem:a8ddb68df5402611a1f6f2e95ce1cb9de"><td class="memItemLeft" align="right" valign="top">ssize_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="server_8c.html#a8ddb68df5402611a1f6f2e95ce1cb9de">sendall</a> (int sockfd, const char *msg)</td></tr>
+<tr class="memdesc:a8ddb68df5402611a1f6f2e95ce1cb9de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Envía un mensaje completo al cliente usando send().  <a href="server_8c.html#a8ddb68df5402611a1f6f2e95ce1cb9de">Más...</a><br /></td></tr>
+<tr class="separator:a8ddb68df5402611a1f6f2e95ce1cb9de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9db6cd735b95c2afe7977b66cb8b56b8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="server_8c.html#a9db6cd735b95c2afe7977b66cb8b56b8">setup_server_socket</a> (void)</td></tr>
+<tr class="memdesc:a9db6cd735b95c2afe7977b66cb8b56b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Crea y configura el socket del servidor (IPv4, TCP).  <a href="server_8c.html#a9db6cd735b95c2afe7977b66cb8b56b8">Más...</a><br /></td></tr>
+<tr class="separator:a9db6cd735b95c2afe7977b66cb8b56b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b19e7e0c524b1a8c59bab9e3d234933"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="server_8c.html#a9b19e7e0c524b1a8c59bab9e3d234933">read_command</a> (int clientfd, char *buffer)</td></tr>
+<tr class="memdesc:a9b19e7e0c524b1a8c59bab9e3d234933"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lee el comando enviado por el cliente hasta '\n' o fin de buffer.  <a href="server_8c.html#a9b19e7e0c524b1a8c59bab9e3d234933">Más...</a><br /></td></tr>
+<tr class="separator:a9b19e7e0c524b1a8c59bab9e3d234933"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d0fb26c45e8dcb5a62055cdb0c85f5f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="server_8c.html#a6d0fb26c45e8dcb5a62055cdb0c85f5f">process_command</a> (int clientfd, const char *cmd, const char *key, const char *value)</td></tr>
+<tr class="memdesc:a6d0fb26c45e8dcb5a62055cdb0c85f5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Procesa el comando recibido del cliente (SET, GET o DEL).  <a href="server_8c.html#a6d0fb26c45e8dcb5a62055cdb0c85f5f">Más...</a><br /></td></tr>
+<tr class="separator:a6d0fb26c45e8dcb5a62055cdb0c85f5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf11440db53eae485aa1e2d9ee10496e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="server_8c.html#abf11440db53eae485aa1e2d9ee10496e">handle_client</a> (int clientfd)</td></tr>
+<tr class="memdesc:abf11440db53eae485aa1e2d9ee10496e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Atiende la conexión con un cliente: lee el comando y lo procesa.  <a href="server_8c.html#abf11440db53eae485aa1e2d9ee10496e">Más...</a><br /></td></tr>
+<tr class="separator:abf11440db53eae485aa1e2d9ee10496e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a840291bc02cba5474a4cb46a9b9566fe"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="server_8c.html#a840291bc02cba5474a4cb46a9b9566fe">main</a> (void)</td></tr>
+<tr class="separator:a840291bc02cba5474a4cb46a9b9566fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Documentación de los 'defines'</h2>
+<a id="aeca034f67218340ecb2261a22c2f3dcd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeca034f67218340ecb2261a22c2f3dcd">&#9670;&nbsp;</a></span>BUFSIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define BUFSIZE&#160;&#160;&#160;512</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a614217d263be1fb1a5f76e2ff7be19a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a614217d263be1fb1a5f76e2ff7be19a2">&#9670;&nbsp;</a></span>PORT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PORT&#160;&#160;&#160;5000</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Documentación de las funciones</h2>
+<a id="abf11440db53eae485aa1e2d9ee10496e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf11440db53eae485aa1e2d9ee10496e">&#9670;&nbsp;</a></span>handle_client()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void handle_client </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>clientfd</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Atiende la conexión con un cliente: lee el comando y lo procesa. </p>
+<dl class="params"><dt>Parámetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">clientfd</td><td>Socket del cliente. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a840291bc02cba5474a4cb46a9b9566fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a840291bc02cba5474a4cb46a9b9566fe">&#9670;&nbsp;</a></span>main()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int main </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6d0fb26c45e8dcb5a62055cdb0c85f5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d0fb26c45e8dcb5a62055cdb0c85f5f">&#9670;&nbsp;</a></span>process_command()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void process_command </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>clientfd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>cmd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Procesa el comando recibido del cliente (SET, GET o DEL). </p>
+<dl class="params"><dt>Parámetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">clientfd</td><td>Socket del cliente. </td></tr>
+    <tr><td class="paramname">cmd</td><td>Comando recibido. </td></tr>
+    <tr><td class="paramname">key</td><td>Clave asociada al comando. </td></tr>
+    <tr><td class="paramname">value</td><td>Valor (solo para SET). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a9b19e7e0c524b1a8c59bab9e3d234933"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b19e7e0c524b1a8c59bab9e3d234933">&#9670;&nbsp;</a></span>read_command()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int read_command </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>clientfd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>buffer</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Lee el comando enviado por el cliente hasta '\n' o fin de buffer. </p>
+<dl class="params"><dt>Parámetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">clientfd</td><td>Socket del cliente. </td></tr>
+    <tr><td class="paramname">buffer</td><td>Buffer donde guardar el comando recibido. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Devuelve</dt><dd>0 en éxito, -1 si hubo error o desconexión. </dd></dl>
+
+</div>
+</div>
+<a id="a8ddb68df5402611a1f6f2e95ce1cb9de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ddb68df5402611a1f6f2e95ce1cb9de">&#9670;&nbsp;</a></span>sendall()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ssize_t sendall </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>sockfd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>msg</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Envía un mensaje completo al cliente usando send(). </p>
+<dl class="params"><dt>Parámetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sockfd</td><td>Socket del cliente. </td></tr>
+    <tr><td class="paramname">msg</td><td>Cadena a enviar (debe terminar en '\0'). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Devuelve</dt><dd>Número de bytes enviados, o valor negativo en caso de error. </dd></dl>
+
+</div>
+</div>
+<a id="a9db6cd735b95c2afe7977b66cb8b56b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9db6cd735b95c2afe7977b66cb8b56b8">&#9670;&nbsp;</a></span>setup_server_socket()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int setup_server_socket </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Crea y configura el socket del servidor (IPv4, TCP). </p>
+<dl class="section return"><dt>Devuelve</dt><dd>Descriptor del socket configurado y en escucha. </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
+</small></address>
+</body>
+</html>
